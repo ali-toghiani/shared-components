@@ -1,1 +1,17 @@
-<p>header works!</p>
+<header class="cs-header bg-white w-full h-[56px] px-10px flex justify-center">
+  <div class="inner-container w-full mx-auto max-w-desktop h-full flex items-center">
+    <div *ngIf="headerConfig">
+      <svg-icon *ngIf="headerConfig.iconPath" [src]="headerConfig.iconPath"></svg-icon>
+      <div class="flex justify-center flex-col">
+        <div class="text-xl"
+             [routerLink]="headerConfig.title.link"
+             [ngClass]="{'cursor-pointer':headerConfig.title.link}">{{headerConfig.title.value}}</div>
+        <div class="text-secondary"
+             [routerLink]="headerConfig.subtitle.link">
+          {{headerConfig.title.value}}
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
