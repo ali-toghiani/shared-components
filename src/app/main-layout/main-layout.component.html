@@ -1,1 +1,5 @@
-<p>main-layout works!</p>
+<app-header [headerConfig]="headerConfig"></app-header>
+<app-actionbar [actionbarConfig]="actionbarConfig"></app-actionbar>
+<div class="w-full max-w-desktop mx-auto">
+  <router-outlet></router-outlet>
+</div>
