@@ -5,11 +5,14 @@ import { WidgetContainerComponent } from './widget-container.component';
 
 
 @NgModule({
-  declarations: [
-    WidgetContainerComponent
-  ],
-  imports: [
-    CommonModule
-  ]
+    declarations: [
+        WidgetContainerComponent
+    ],
+    exports: [
+        WidgetContainerComponent
+    ],
+    imports: [
+        CommonModule
+    ]
 })
 export class WidgetContainerModule { }
