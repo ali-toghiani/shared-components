@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableComponent } from './table/table.component';
-
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 
 @NgModule({
@@ -9,7 +9,8 @@ import { TableComponent } from './table/table.component';
     TableComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    NzTableModule
   ],
   exports: [
     TableComponent

@@ -1,1 +1,25 @@
-<p>table works!</p>
+<nz-table #basicTable [nzData]="listOfData" [nzFrontPagination]="false">
+  <thead>
+  <tr>
+    <th *ngFor="let header of headers">{{header}}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngIf="listOfData.length > 0 else emptyViewTemplate">
+    <ng-container *ngFor="let rowData of listOfData; let i = index; trackBy: trackByFn;">
+      <tr>
+        <ng-container *ngFor="let td of tableCells;let tdIndex = index; trackBy: trackByFn;">
+          <td>
+            <ng-container [ngTemplateOutlet]="td" [ngTemplateOutletContext]="{data: rowData, index: tdIndex}">
+            </ng-container>
+          </td>
+        </ng-container>
+      </tr>
+    </ng-container>
+  </ng-container>
+  <ng-template #emptyViewTemplate>
+    <ng-container [ngTemplateOutlet]="emptyView">
+    </ng-container>
+  </ng-template>
+  </tbody>
+</nz-table>
