@@ -1,5 +1,12 @@
 :host ::ng-deep .ant-table-thead > tr > th,
 :host ::ng-deep .ant-table-tbody > tr > th,
 :host ::ng-deep .ant-table-tbody > tr > td {
-  text-align: right;
+  text-align: center;
+}
+
+
+:host ::ng-deep .ant-table-thead > tr > th:first-child,
+:host ::ng-deep .ant-table-tbody > tr > th:first-child,
+:host ::ng-deep .ant-table-tbody > tr > td:first-child {
+  text-align: start;
 }
