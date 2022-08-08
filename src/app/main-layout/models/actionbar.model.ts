@@ -1,11 +1,13 @@
 export interface ActionbarModel {
-  isBackDisabled: boolean;
+  isBackDisabled?: boolean;
   actions: ActionItem[];
 }
 
-interface ActionItem {
+export interface ActionItem {
   title: string;
-  iconPath: string;
-  link: string[];
-  classes?: string[];
+  iconType: string;
+  link?: string[];
+  color?: 'green' | 'yellow' | 'red';
+  isDisabled?: boolean;
+  isLoading?: boolean;
 }
