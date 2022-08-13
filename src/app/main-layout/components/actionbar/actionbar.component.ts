@@ -27,12 +27,12 @@ export class ActionbarComponent implements OnInit {
     this.layoutService.actionbarClickEvent.emit(title);
   }
 
-  getTailwindColor(color: 'green' | 'red' | 'yellow'): string{
+  getTailwindColor(color: 'green' | 'red' | 'orange'): string{
     if (color){
       const colors = {
         green: "#52c41a",
         red: "#ef4565",
-        yellow: "#ff8906"
+        orange: "#ff8906"
       }
       return colors[color];
     }

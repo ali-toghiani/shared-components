@@ -7,7 +7,7 @@ export interface ActionItem {
   title: string;
   iconType: string;
   link?: string[];
-  color?: 'green' | 'yellow' | 'red';
+  color?: 'green' | 'orange' | 'red';
   isDisabled?: boolean;
   isLoading?: boolean;
 }
