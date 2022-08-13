@@ -7,20 +7,26 @@
       </div>
       <ng-container *ngIf="actionbarConfig && actionbarConfig.actions.length>0">
         <div *ngFor="let action of actionbarConfig.actions"
-             (click)="itemClicked(action.title)"
+             (click)="itemClicked(action)"
              class="action-item cursor-pointer flex items-center gap-5px"
              [ngClass]="{
              'cursor-not-allowed': action.isDisabled,
              'text-success': action.color === 'green',
+             'text-warning': action.color === 'orange',
              'text-error':action.color === 'red'
              }">
           <ng-container *ngIf="action.iconType">
             <i nz-icon
                *ngIf="!action.isLoading else LoadingIcon"
                [nzType]="action.iconType"
-               nzTheme="twotone"
-               [nzTwotoneColor]="getTailwindColor(action.color)"
-               class="text-main flex">
+               class="text-main flex text-error"
+               [ngClass]="{
+             'cursor-not-allowed': action.isDisabled,
+             'text-success': action.color === 'green',
+             'text-warning': action.color === 'orange',
+             'text-error':action.color === 'red'
+             }"
+            >
             </i>
             <ng-template #LoadingIcon>
               <i nz-icon [nzType]="'loading'"></i>
