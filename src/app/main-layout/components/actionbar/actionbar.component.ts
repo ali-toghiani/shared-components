@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
-import { ActionbarModel } from "../../models/actionbar.model";
+import {ActionbarModel, ActionItem} from "../../models/actionbar.model";
 // FIXME: move MainLayoutService to shared-components
 import { MainLayoutService } from "../../../../../../src/app/services/main-layout.service";
 
@@ -13,10 +14,16 @@ export class ActionbarComponent implements OnInit {
 
   @Input() actionbarConfig : ActionbarModel;
   constructor(
-    private layoutService: MainLayoutService
+    private layoutService: MainLayoutService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+    this.router.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        this.actionbarConfig = { actions: []};
+      }
+    });
   }
 
   onBackClicked(){
