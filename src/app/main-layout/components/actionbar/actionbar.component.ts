@@ -23,8 +23,12 @@ export class ActionbarComponent implements OnInit {
     history.back();
   }
 
-  itemClicked( title: string): void{
-    this.layoutService.actionbarClickEvent.emit(title);
+  itemClicked( action: ActionItem): void{
+    if (action.link){
+      this.router.navigate(action.link);
+    } else {
+      this.layoutService.actionbarClickEvent.emit(action.title);
+    }
   }
 
   getTailwindColor(color: 'green' | 'red' | 'orange'): string{
