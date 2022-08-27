@@ -1,9 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationStart } from '@angular/router';
 
-import {ActionbarModel, ActionItem} from "../../models/actionbar.model";
+import { Subscription } from "rxjs";
+
+import { ActionbarModel, ActionItem } from "../../models/actionbar.model";
 // FIXME: move MainLayoutService to shared-components
-import { MainLayoutService } from "../../../../../../src/app/services/main-layout.service";
+import { MainLayoutService } from "@services";
 
 @Component({
   selector: 'app-actionbar',
@@ -12,15 +14,21 @@ import { MainLayoutService } from "../../../../../../src/app/services/main-layou
 })
 export class ActionbarComponent implements OnInit {
 
-  @Input() actionbarConfig : ActionbarModel;
+  actionbarConfig : ActionbarModel = {isBackDisabled: false, actions: []};
+
+  subscriptions = new Subscription();
   constructor(
     private layoutService: MainLayoutService,
     private router: Router
-  ) { }
+  ) {
+    this.layoutService.actionbarConfigSubject.subscribe( actionbarConf => {
+      this.actionbarConfig = actionbarConf;
+    })
+  }
 
   ngOnInit(): void {
     this.router.events.subscribe((val) => {
-      if (val instanceof NavigationEnd) {
+      if (val instanceof NavigationStart) {
         this.actionbarConfig = { actions: []};
       }
     });
@@ -49,4 +57,5 @@ export class ActionbarComponent implements OnInit {
     }
     return "#3da9fc";
   }
+
 }
