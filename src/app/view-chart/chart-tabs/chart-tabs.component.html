@@ -1,0 +1,29 @@
+<nz-tabset
+  style="height:350px; display: flex; justify-content: center"
+  id="tabset"
+  nzTabPosition="left"
+  [(nzSelectedIndex)]="selectedTabIndex"
+  [nzTabBarExtraContent]="exportChartTemplate"
+  (nzSelectChange)="selectedChartType = chartTypesArray[selectedTabIndex]">
+  <nz-tab
+    *ngFor="let tab of chartTypesArray; let i = index"
+    [nzTitle]="'charts.type.'+ tab | translate"
+  >
+    <app-view-chart [questionData]="chartData"
+                    class="w-[800px] h-[350px]"
+                    [setChartType]="selectedChartType"
+                    (exportCompleted)="isLoadingExport = false"
+                    [onExport]="exportClicked" *ngIf="selectedTabIndex === i">
+    </app-view-chart>
+  </nz-tab>
+  <ng-template #exportChartTemplate>
+    <button nz-button nzType="dashed" class="text-success" (click)="onExportBtnClicked()" [nzLoading]="isLoadingExport">
+      {{'charts.export-chart' | translate}}
+      <i class="text-success"
+         *ngIf="!isLoadingExport"
+         nz-icon
+         nzType="file-image"
+         nzTheme="outline"></i>
+    </button>
+  </ng-template>
+</nz-tabset>
