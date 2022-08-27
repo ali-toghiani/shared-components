@@ -1,8 +1,9 @@
-import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, Output, ViewChild, EventEmitter} from '@angular/core';
 
 import Chart from "chart.js/auto";
 import { ChartTypeRegistry } from "chart.js";
-import { SurveyQuestion } from "@models";
+import { PorslineQuestion, SurveyQuestion } from "@models";
+import { ChartTypesType, ChartTypesArray } from "@shared-components/src/app/view-chart/chart-types";
 
 const ChartTypes = {
   1: "bar",
@@ -40,16 +41,27 @@ const colors = [
 export class ViewChartComponent implements OnInit, AfterViewInit {
 
   @ViewChild('canvas') canvasRef: ElementRef;
-  questionData: SurveyQuestion
-  @Input() set setQuestionData(data: SurveyQuestion){
-    this.questionData = data;
-    this.reloadChart(data);
+  @ViewChild('exportCanvas') exportCanvasRef: ElementRef;
+
+  @Input() questionData: PorslineQuestion | SurveyQuestion;
+  @Input() set setChartType(type: ChartTypesType){
+    this.selectedChartType = type;
+    this.reloadChart();
   }
 
+  @Input() set onExport(type: any){
+    this.exportChart()
+  }
+
+  @Output() exportCompleted = new EventEmitter<boolean>();
   ctx;
+  exportCtx;
   chart;
+  chartConfig;
+  hqChart;
   isLoading = true;
-  selectedChartType: ChartTypes;
+  selectedTabIndex = 0;
+  selectedChartType: ChartTypesType = ChartTypesArray[this.selectedTabIndex];
   chartInvalidError = false;
 
   constructor() { }
@@ -57,14 +69,19 @@ export class ViewChartComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
   }
 
+  get chartTypesArray(): string[]{
+    return ChartTypesArray;
+  }
+
   ngAfterViewInit(): void {
     if (this.questionData){
-      this.initChart();
+      this.generateChartData();
     }
   }
 
   initChart(): void{
-    const chartType = this.questionData.customChartSettings ? this.questionData.customChartSettings.type : ChartTypes[this.questionData.charts[0].type];
+    // const chartType = this.questionData.customChartSettings ? this.questionData.customChartSettings.type : ChartTypes[this.questionData.charts[0].type];
+    const chartType = ChartTypes[this.questionData.charts[0].type];
     if (chartType && ChartTypes[chartType]) {
       this.selectedChartType = ChartTypes[chartType];
       this.generateChartData();
@@ -82,7 +99,7 @@ export class ViewChartComponent implements OnInit, AfterViewInit {
     })
 
     this.ctx = this.canvasRef.nativeElement.getContext('2d');
-    this.chart = new Chart(this.ctx, {
+    this.chartConfig = {
       type: this.selectedChartType as keyof ChartTypeRegistry,
       data: {
         labels: chartLabels,
@@ -95,27 +112,75 @@ export class ViewChartComponent implements OnInit, AfterViewInit {
         ]
       },
       options: {
-        responsive: true,
+
         plugins: {
           legend: {
+            display: this.shouldDisplayLegend(),
             position: 'bottom',
-            title:{
-              text: this.questionData.title
+            labels:{
+              text: this.questionData.title,
             }
           }
         }
       }
-    });
+    };
+    this.chart = new Chart(this.ctx, this.chartConfig);
     this.isLoading = false;
   }
 
-  reloadChart(event: SurveyQuestion):void{
+  shouldDisplayLegend():boolean{
+    const noLegendChartTypes= [ChartTypes.bar,ChartTypes.line, ChartTypes.radar];
+    return !noLegendChartTypes.some(item => item === this.selectedChartType);
+  }
+
+  reloadChart():void{
     if (!this.isLoading){
-    this.selectedChartType = this.questionData.customChartSettings ? this.questionData.customChartSettings.type : ChartTypes[this.questionData.charts[0].type];
+    // this.selectedChartType = this.questionData.customChartSettings ? this.questionData.customChartSettings.type : ChartTypes[this.questionData.charts[0].type];
     this.isLoading = true;
     this.chart.destroy();
     this.generateChartData();
     }
+  }
+
+  exportChart(): void{
+    if (!this.isLoading){
+      this.exportCtx = this.exportCanvasRef.nativeElement.getContext('2d');
+      this.hqChart =  new Chart(this.exportCtx,
+        {
+          ...this.chartConfig,
+          options: {
+            animation: {onComplete: () => this.downloadImage()},
+            scales: !this.shouldDisplayLegend() ? {
+              x:{
+                ticks:{
+                  font:{size:32}}
+              },
+              y:{
+                ticks:{
+                  font:{size:32}}
+              }
+            } : {},
+            plugins: {
+              legend: {
+                ...this.chartConfig.options.plugins.legend,
+                labels:{font: {size: 32}}
+              },
+            }
+          }
+        })
+      this.hqChart.render()
+    }
+  }
+
+  downloadImage(): void{
+    var image = this.hqChart.toBase64Image('image/jpg', 1);
+
+    const link = document.createElement('a');
+    link.setAttribute('href', image);
+    link.setAttribute('download', this.selectedChartType + '-chart');
+    link.click();
+    this.exportCompleted.emit(true);
+    this.hqChart.destroy();
   }
 
 }

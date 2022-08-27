@@ -1,5 +1,11 @@
 <div class="chart-container">
-  <canvas #canvas class="max-h-[300px]">
+  <canvas #canvas class="max-h-[300px] max-w-[800px]">
     {{chart}}
+  </canvas>
+</div>
+
+<div style="z-index: -1; position: relative">
+  <canvas #exportCanvas width="1200" height="600">
+    {{hqChart}}
   </canvas>
 </div>
