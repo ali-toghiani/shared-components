@@ -8,6 +8,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { MainLayoutComponent } from './main-layout.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ActionbarComponent } from './components/actionbar/actionbar.component';
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ActionbarComponent } from './components/actionbar/actionbar.component';
     CommonModule,
     RouterModule,
     AngularSvgIconModule,
-    NzIconModule
+    NzIconModule,
+    TranslateModule
   ]
 })
 export class MainLayoutModule { }
