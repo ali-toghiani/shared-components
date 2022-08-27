@@ -1,9 +1,11 @@
 <div class="cs-header px-10px w-full h-[45px] flex justify-center">
   <div class="inner-container bg-white bg-opacity-50 rounded-b-md px-10px md:px-15px w-full mx-auto max-w-desktop h-full flex items-center">
-    <div class="actions-container text-main flex gap-[15px] custom-text-unselectable">
-      <div class="action-item cursor-pointer back-action flex items-center gap-10px" (click)="onBackClicked()">
+    <div class="actions-container text-main flex gap-[15px] custom-text-unselectable" *ngIf="actionbarConfig">
+      <div *ngIf="!actionbarConfig.isBackDisabled"
+           class="action-item cursor-pointer back-action flex items-center gap-10px"
+           (click)="onBackClicked()">
         <i nz-icon nzType="arrow-right" nzTheme="outline" class="flex"></i>
-        <span>بازگشت</span>
+        <span>{{'common.back' | translate}}</span>
       </div>
       <ng-container *ngIf="actionbarConfig && actionbarConfig.actions.length>0">
         <div *ngFor="let action of actionbarConfig.actions"
@@ -32,7 +34,7 @@
               <i nz-icon [nzType]="'loading'"></i>
             </ng-template>
           </ng-container>
-          <span>{{action.title}}</span>
+          <span>{{action.title|translate}}</span>
         </div>
       </ng-container>
     </div>
