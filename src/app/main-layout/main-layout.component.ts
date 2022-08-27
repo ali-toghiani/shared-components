@@ -1,6 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import {HeaderModel} from "./models/header.model";
-import {ActionbarModel} from "./models/actionbar.model";
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-main-layout',
@@ -8,8 +6,7 @@ import {ActionbarModel} from "./models/actionbar.model";
   styleUrls: ['./main-layout.component.scss']
 })
 export class MainLayoutComponent implements OnInit {
-  @Input() headerConfig: HeaderModel;
-  @Input() actionbarConfig: ActionbarModel;
+
   constructor() { }
 
   ngOnInit(): void {
