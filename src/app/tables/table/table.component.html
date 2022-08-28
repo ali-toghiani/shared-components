@@ -4,8 +4,8 @@
     <th *ngFor="let header of headers">{{header}}</th>
   </tr>
   </thead>
-  <tbody>
-  <ng-container *ngIf="!!listOfData && listOfData.length > 0 else emptyViewTemplate">
+  <tbody *ngIf="!!listOfData && listOfData.length > 0 else emptyViewTemplate">
+  <ng-container>
     <ng-container *ngFor="let rowData of listOfData; let i = index; trackBy: trackByFn;">
       <tr>
         <ng-container *ngFor="let td of tableCells;let tdIndex = index; trackBy: trackByFn;">
@@ -17,9 +17,15 @@
       </tr>
     </ng-container>
   </ng-container>
-  <ng-template #emptyViewTemplate>
-    <ng-container [ngTemplateOutlet]="emptyView">
-    </ng-container>
-  </ng-template>
   </tbody>
+
+  <ng-template #emptyViewTemplate>
+    <tr>
+      <td colspan="100%" class="pt-40px">
+        <ng-container [ngTemplateOutlet]="emptyView">
+        </ng-container>
+      </td>
+    </tr>
+  </ng-template>
+
 </nz-table>
