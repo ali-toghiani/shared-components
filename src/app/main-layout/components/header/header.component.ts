@@ -26,6 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
         this.headerConfig = header;
       })
     )
+    this.tokenService.getToken();
   }
 
   ngOnDestroy() {
