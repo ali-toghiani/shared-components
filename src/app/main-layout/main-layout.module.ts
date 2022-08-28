@@ -4,6 +4,7 @@ import { RouterModule } from "@angular/router";
 
 import { AngularSvgIconModule} from "angular-svg-icon";
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule} from "ng-zorro-antd/button";
 
 import { MainLayoutComponent } from './main-layout.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -25,7 +26,8 @@ import {TranslateModule} from "@ngx-translate/core";
     RouterModule,
     AngularSvgIconModule,
     NzIconModule,
-    TranslateModule
+    TranslateModule,
+    NzButtonModule
   ]
 })
 export class MainLayoutModule { }
